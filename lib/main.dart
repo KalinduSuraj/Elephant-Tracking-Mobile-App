@@ -701,6 +701,195 @@ class MapView extends StatelessWidget {
   }
 }
 
+// --- SettingsPage Widget ---
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
+
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  // TextEditingControllers for the editable fields
+  final TextEditingController _nameController = TextEditingController(text: 'John Doe'); // Placeholder name
+  final TextEditingController _passwordController = TextEditingController(text: '********'); // Placeholder password
+
+  // Placeholder for email (not editable)
+  final String _email = 'johndoe@example.com';
+
+  // State variable to toggle password visibility
+  bool _isPasswordVisible = false;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _saveChanges() {
+    // In a real app, you would save these changes to a backend or local storage.
+    // For now, we'll just show a Snackbar.
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Changes Saved!')),
+    );
+    // You might also want to pop back after saving, or update a state management solution
+    // Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBodyBehindAppBar: true, // Allows the body to extend behind the AppBar
+      appBar: AppBar(
+        backgroundColor: Colors.transparent, // Transparent AppBar
+        elevation: 0, // No shadow
+        title: const Text(
+          'Settings',
+          style: TextStyle(
+            color: Color(0xFF4C7D4C), // Text color for visibility on light background
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true, // Center the title
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: const Color(0xFF4C7D4C), size: 28), // Darker icon for contrast
+          onPressed: () {
+            Navigator.pop(context); // Go back to the previous screen (HomeScreen)
+          },
+        ),
+      ),
+      body: Container( // Wrap the body in a Container for background control
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFE0F0E0), Color(0xFFF0FFF0)], // Consistent light gradient background
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch, // Stretch fields horizontally
+                children: <Widget>[
+                  Icon(
+                    Icons.account_circle,
+                    size: 100,
+                    color: const Color(0xFF4C7D4C),
+                  ),
+                  SizedBox(height: 30),
+                  // --- Email Display (Non-Editable) ---
+                  Text(
+                    'Email Address',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.grey.withOpacity(0.3)),
+                    ),
+                    child: Text(
+                      _email, // Display the non-editable email
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey[800],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  // --- Name Field ---
+                  TextField(
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      labelText: 'Name',
+                      labelStyle: TextStyle(color: Colors.grey[700]),
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.5),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(color: const Color(0xFF4C7D4C), width: 2),
+                      ),
+                      prefixIcon: Icon(Icons.person, color: Colors.grey[700]),
+                    ),
+                    style: TextStyle(color: Colors.grey[900]),
+                  ),
+                  SizedBox(height: 20),
+                  // --- Password Field ---
+                  TextField(
+                    controller: _passwordController,
+                    obscureText: !_isPasswordVisible, // Use the state variable
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      labelStyle: TextStyle(color: Colors.grey[700]),
+                      hintText: 'Enter new password',
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.5),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(color: const Color(0xFF4C7D4C), width: 2),
+                      ),
+                      prefixIcon: Icon(Icons.lock, color: Colors.grey[700]),
+                      suffixIcon: IconButton( // Add the eye icon
+                        icon: Icon(
+                          _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                          color: Colors.grey[700],
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible; // Toggle visibility
+                          });
+                        },
+                      ),
+                    ),
+                    style: TextStyle(color: Colors.grey[900]),
+                  ),
+                  SizedBox(height: 30),
+                  ElevatedButton(
+                    onPressed: _saveChanges, // Call the save changes function
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF4C7D4C), // Button background color
+                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 18),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text(
+                      'Save Changes',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 
 // --- RegistrationPage Widget ---
 class RegistrationPage extends StatelessWidget {
