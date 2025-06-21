@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "299727334191",
+    "project_id": "elephant-tracking-mobile-app",
+    "storage_bucket": "elephant-tracking-mobile-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:299727334191:android:86db96bca278ea3c838fda",
+        "android_client_info": {
+          "package_name": "com.example.elephant_tracking_mobile_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfL8QY0QeGSayfzoB9pdFbTorCXPglpuA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
